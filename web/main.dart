@@ -24,9 +24,11 @@ void tryConnect([_]) {
   });
 }
 
-var timeDiv = document.querySelector("#time");
+var timeSpan = document.querySelector("#time-put");
+var batterySpan = document.querySelector("#battery-put");
 void handleMessage(String msg) {
   print(msg);
   var json = jsonDecode(msg);
-  timeDiv.text = json["matchTime"].toString();
+  timeSpan.text = json["matchTime"].toString();
+  batterySpan.text = json["batteryVoltage"].toStringAsFixed(2);
 }

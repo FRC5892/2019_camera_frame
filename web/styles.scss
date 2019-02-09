@@ -3,32 +3,38 @@ body {
 	padding: 0;
 	width: 100%;
 	background-color: #ff8e1c;
+	color: white;
+	font-size: 96pt;
 }
 
 .container {
 	width: 100%;
 	height: 568px;
+	padding-top: 25px;
 
 	display: grid;
-	grid-template-columns: auto;
-	grid-template-rows: auto auto auto;
+	grid-template-columns: 200px 360px auto;
+	grid-template-rows: auto auto;
 	grid-template-areas:
-		'gearbolt stream time';
-	justify-content: space-evenly;
+		'gearbolt stream time'
+		'gearbolt battery battery';
+	justify-content: space-around;
 }
 
 #gearbolt {
 	grid-area: gearbolt;
+	max-width: 200px;
 }
 
 #stream {
-	padding-top: 50px;
 	grid-area: stream;
 	transform: rotate(-90deg);
 }
 
 #time {
 	grid-area: time;
-	color: white;
-	font-size: 120pt;
+}
+
+#battery {
+	grid-area: battery;
 }
