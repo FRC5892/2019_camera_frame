@@ -1,0 +1,4 @@
+cd /var/local/natinst/www
+rm -Rf dashboard
+mkdir dashboard
+unzip dashboard.zip -d dashboard

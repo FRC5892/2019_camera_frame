@@ -1,5 +1,9 @@
 @echo off
 cmd /c webdev build
-rem Have to split the SFTP script into separate files so it can try to create the directory, but not crash if it exists.
-psftp -b deploy.bat.psftp.1 admin@10.58.92.2
-psftp -b deploy.bat.psftp.2 admin@10.58.92.2
+cd build
+7z a dashboard.zip "@.build.manifest" .build.manifest
+psftp -b ..\deploy.bat.psftp admin@10.58.92.2
+del dashboard.zip
+cd ..
+rem That's so webdev doesn't complain next time
+plink -m deploy.bat.plink admin@10.58.92.2
