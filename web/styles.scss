@@ -13,12 +13,13 @@ body {
 	padding-top: 25px;
 
 	display: grid;
-	grid-template-columns: 200px 360px auto;
-	grid-template-rows: auto auto;
+	grid-template-columns: 200px 360px 300px;
+	grid-template-rows: 360px 200px;
 	grid-template-areas:
 		'gearbolt stream time'
 		'gearbolt battery battery';
 	justify-content: space-around;
+	align-content: space-around;
 }
 
 #gearbolt {

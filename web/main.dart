@@ -34,7 +34,7 @@ void tryConnect([_]) {
 var timeSpan = document.querySelector("#time-put");
 var batterySpan = document.querySelector("#battery-put");
 void handleMessage(String msg) {
-  print(msg);
+  //print(msg);
   var json = jsonDecode(msg);
   timeSpan.text = json["matchTime"].toString();
   batterySpan.text = json["batteryVoltage"].toStringAsFixed(2);
