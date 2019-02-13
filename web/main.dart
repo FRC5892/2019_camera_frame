@@ -5,10 +5,12 @@ import 'dart:html';
 WebSocket socket;
 StreamController<String> streamController = StreamController();
 
+bool debug = window.origin.contains("localhost");
+
 void main() {
   Timer.periodic(const Duration(seconds: 1), tryConnect);
   streamController.stream.listen(handleMessage);
-  if (window.origin.contains("localhost")) {
+  if (debug) {
     (querySelector("#stream") as ImageElement)
       ..style.transform = "initial"
       // image from placeholder.com
@@ -31,11 +33,16 @@ void tryConnect([_]) {
   });
 }
 
-var timeSpan = document.querySelector("#time-put");
-var batterySpan = document.querySelector("#battery-put");
+var timeSpan = querySelector("#time-put");
+var batterySpan = querySelector("#battery-put");
+var brownoutWarning = querySelector("#warn-brownout");
 void handleMessage(String msg) {
-  //print(msg);
+  if (debug) {
+    print(msg);
+  }
   var json = jsonDecode(msg);
   timeSpan.text = json["matchTime"].toString();
   batterySpan.text = json["batteryVoltage"].toStringAsFixed(2);
+  brownoutWarning.style.display =
+      json["warnings"]["brownedOut"] ? "initial" : "none";
 }

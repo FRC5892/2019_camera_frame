@@ -14,10 +14,11 @@ body {
 
 	display: grid;
 	grid-template-columns: 200px 360px 300px;
-	grid-template-rows: 360px 200px;
+	grid-template-rows: 250px auto 200px;
 	grid-template-areas:
 		'gearbolt stream time'
-		'gearbolt battery battery';
+		'warnings stream time'
+		'warnings battery battery';
 	justify-content: space-around;
 	align-content: space-around;
 }
@@ -25,6 +26,24 @@ body {
 #gearbolt {
 	grid-area: gearbolt;
 	max-width: 200px;
+}
+
+#warnings {
+	grid-area: warnings;
+	font-size: 16pt;
+
+	h2 {
+		font-size: 24pt;
+		margin: 0 0 10px 0;
+	}
+
+	ul {
+		margin: 0;
+	}
+
+	.warning {
+		display: none;
+	}
 }
 
 #stream {
