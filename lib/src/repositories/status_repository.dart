@@ -17,8 +17,8 @@ class StatusRepository {
     bool retry = true;
     StreamSubscription subscription;
     var controller = StreamController<StatusMessage>(
-        onPause: subscription.pause,
-        onResume: subscription.resume,
+        onPause: () => subscription.pause(),
+        onResume: () => subscription.resume(),
         onCancel: () {
           retry = false;
           subscription.cancel();

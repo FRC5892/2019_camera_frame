@@ -1,0 +1,64 @@
+:host {
+  display: grid;
+  width: 100%;
+  grid-template-rows: 110px 55px (240 - 55 - 10)px auto;
+  grid-template-columns: 360px 300px 300px;
+  grid-template-areas:
+    'match-time team-banner battery-voltage'
+    'camera-feed gearbolt connection-state'
+    'camera-feed gearbolt warnings'
+    'nil gearbolt warnings';
+  grid-gap: 10px;
+  justify-content: space-around;
+}
+
+%big-text {
+  font-size: 48pt;
+  margin: auto;
+  padding: 15px;
+}
+
+.match-time {
+  @extend %big-text;
+
+  grid-area: match-time;
+}
+
+.team-banner {
+  grid-area: team-banner;
+  width: 300px;
+}
+
+.battery-voltage {
+  @extend %big-text;
+
+  grid-area: battery-voltage;
+}
+
+.camera-feed {
+  grid-area: camera-feed;
+}
+
+.gearbolt {
+  grid-area: gearbolt;
+  width: 300px;
+}
+
+.connection-state {
+  font-size: 36pt;
+  margin: auto;
+  grid-area: connection-state;
+}
+
+.warnings {
+  grid-area: warnings;
+  font-size: 18pt;
+
+  h2 {
+    margin-bottom: 0;
+  }
+
+  ul {
+    margin-top: 5px;
+  }
+}

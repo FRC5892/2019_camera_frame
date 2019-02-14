@@ -48,7 +48,7 @@ class StatusBloc extends Bloc<ConnectRequest, StatusPacket> {
         controller.add(StatusPacket(
           connected: true,
           matchTime: message.matchTime.toString(),
-          batteryVoltage: message.batteryVoltage.toStringAsFixed(2),
+          batteryVoltage: message.batteryVoltage.toStringAsFixed(2) + " V",
           warnings: warningsToStringList(message.warnings),
         ));
       }
@@ -57,8 +57,8 @@ class StatusBloc extends Bloc<ConnectRequest, StatusPacket> {
   }
 
   static List<String> warningsToStringList(Warnings warnings) {
-    var ret = <String>[];
-    if (warnings.isBrownedOut) ret.add("Browned out");
+    var ret = <String>["Test Warning"];
+    if (warnings?.isBrownedOut ?? false) ret.add("Browned out");
     return ret;
   }
 }
