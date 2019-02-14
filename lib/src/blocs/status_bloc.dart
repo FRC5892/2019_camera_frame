@@ -57,8 +57,9 @@ class StatusBloc extends Bloc<ConnectRequest, StatusPacket> {
   }
 
   static List<String> warningsToStringList(Warnings warnings) {
-    var ret = <String>["Test Warning"];
+    var ret = <String>[];
     if (warnings?.isBrownedOut ?? false) ret.add("Browned out");
+    //ret.add("Test Warning");
     return ret;
   }
 }
