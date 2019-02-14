@@ -1,60 +1,9 @@
+@import "package:camera_frame/shared";
+
 body {
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	background-color: #ff8e1c;
-	color: white;
-	font-size: 96pt;
-}
-
-.container {
-	width: 100%;
-	height: 568px;
-	padding-top: 25px;
-
-	display: grid;
-	grid-template-columns: 200px 360px 300px;
-	grid-template-rows: 250px auto 200px;
-	grid-template-areas:
-		'gearbolt stream time'
-		'warnings stream time'
-		'warnings battery battery';
-	justify-content: space-around;
-	align-content: space-around;
-}
-
-#gearbolt {
-	grid-area: gearbolt;
-	max-width: 200px;
-}
-
-#warnings {
-	grid-area: warnings;
-	font-size: 16pt;
-
-	h2 {
-		font-size: 24pt;
-		margin: 0 0 10px 0;
-	}
-
-	ul {
-		margin: 0;
-	}
-
-	.warning {
-		display: none;
-	}
-}
-
-#stream {
-	grid-area: stream;
-	transform: rotate(-90deg);
-}
-
-#time {
-	grid-area: time;
-}
-
-#battery {
-	grid-area: battery;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  color: white;
+  background-color: $team-orange;
 }
