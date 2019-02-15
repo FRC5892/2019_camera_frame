@@ -23,14 +23,15 @@ class StatusRepository {
           retry = false;
           subscription.cancel();
         });
+
     void setSubscription(StreamSubscription sub) {
       subscription = sub;
       sub.onDone(() {
         if (!retry) return;
-        controller.add(null); // not the most elegant notification but hey
+        controller.add(DisconnectMessage());
         setSubscription(connector(url).stream.listen((msg) {
           if (msg is String) {
-            controller.add(StatusMessage.fromJson(jsonDecode(msg)));
+            controller.add(PacketMessage.fromJson(jsonDecode(msg)));
           }
         }));
       });
@@ -38,7 +39,7 @@ class StatusRepository {
 
     setSubscription(connector(url).stream.listen((msg) {
       if (msg is String) {
-        controller.add(StatusMessage.fromJson(jsonDecode(msg)));
+        controller.add(PacketMessage.fromJson(jsonDecode(msg)));
       }
     }));
     return controller.stream;

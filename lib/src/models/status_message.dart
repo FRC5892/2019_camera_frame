@@ -2,24 +2,28 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'status_message.g.dart';
 
-@JsonSerializable(generateToJsonFunction: false)
-class StatusMessage {
+abstract class StatusMessage {}
+
+class DisconnectMessage extends StatusMessage {}
+
+@JsonSerializable(createToJson: false)
+class PacketMessage extends StatusMessage {
   int matchTime;
   double batteryVoltage;
 
   Warnings warnings;
 
-  StatusMessage({
+  PacketMessage({
     this.matchTime,
     this.batteryVoltage,
     this.warnings,
   });
 
-  factory StatusMessage.fromJson(Map<String, dynamic> json) =>
-      _$StatusMessageFromJson(json);
+  factory PacketMessage.fromJson(Map<String, dynamic> json) =>
+      _$PacketMessageFromJson(json);
 }
 
-@JsonSerializable(generateToJsonFunction: false)
+@JsonSerializable(createToJson: false)
 class Warnings {
   bool isBrownedOut;
 

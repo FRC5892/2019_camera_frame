@@ -42,9 +42,9 @@ class StatusBloc extends Bloc<ConnectRequest, StatusPacket> {
     var repo = StatusRepository(connector: connector);
     StreamController<StatusPacket> controller = StreamController();
     repo.connect(event.address).listen((message) {
-      if (message == null) {
+      if (message is DisconnectMessage) {
         controller.add(initialState);
-      } else {
+      } else if (message is PacketMessage) {
         controller.add(StatusPacket(
           connected: true,
           matchTime: message.matchTime.toString(),
