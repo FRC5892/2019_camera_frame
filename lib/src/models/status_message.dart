@@ -10,17 +10,33 @@ class DisconnectMessage extends StatusMessage {}
 class PacketMessage extends StatusMessage {
   int matchTime;
   double batteryVoltage;
+  int pressureReading;
 
+  Infos infos;
   Warnings warnings;
 
   PacketMessage({
     this.matchTime,
     this.batteryVoltage,
+    this.pressureReading,
+
+    this.infos,
     this.warnings,
   });
 
   factory PacketMessage.fromJson(Map<String, dynamic> json) =>
       _$PacketMessageFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class Infos {
+  bool slowDrive;
+
+  Infos({
+    this.slowDrive,
+  });
+
+  factory Infos.fromJson(Map<String, dynamic> json) => _$InfosFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)

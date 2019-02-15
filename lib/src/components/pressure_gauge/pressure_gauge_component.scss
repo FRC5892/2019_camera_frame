@@ -1,0 +1,28 @@
+:host {
+  display: grid;
+  grid-template-rows: 85px
+                      10px;
+  grid-template-columns: 50px 300px;
+  grid-template-areas:
+    'label gauge'
+    'nil nil';
+  grid-gap: 5px 10px;
+}
+
+.label {
+  grid-area: label;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-weight: bold;
+  font-size: 36pt;
+}
+
+.gauge {
+  grid-area: gauge;
+  background-color: white;
+  height: 85px;
+}
+
+.placeholder {
+  grid-area: nil;
+}

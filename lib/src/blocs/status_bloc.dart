@@ -7,7 +7,7 @@ import '../models/status_message.dart';
 import '../repositories/status_repository.dart';
 
 class ConnectRequest {
-  String address; // should always be ws://10.58.92.2:5800
+  String address;
 
   ConnectRequest({this.address = "ws://10.58.92.2:5800"});
 }
@@ -17,12 +17,18 @@ class StatusPacket {
 
   String matchTime;
   String batteryVoltage;
+  double pressureFullness;
+
+  List<String> infos;
   List<String> warnings;
 
   StatusPacket({
     this.connectionMessage = "Disconnected",
     this.matchTime = "",
     this.batteryVoltage = "",
+    this.pressureFullness = 0,
+
+    this.infos = const [],
     this.warnings = const [],
   });
 }
@@ -41,6 +47,7 @@ class StatusBloc extends Bloc<ConnectRequest, StatusPacket> {
     _lastSubscription?.cancel();
     var repo = StatusRepository(connector: connector);
     StreamController<StatusPacket> controller = StreamController();
+
     repo.connect(event.address).listen((message) {
       if (message is DisconnectMessage) {
         controller.add(initialState);
@@ -49,11 +56,21 @@ class StatusBloc extends Bloc<ConnectRequest, StatusPacket> {
           connectionMessage: "Connected",
           matchTime: message.matchTime.toString(),
           batteryVoltage: message.batteryVoltage.toStringAsFixed(2) + " V",
+          pressureFullness: (message.pressureReading - 100) / 700.0,
+
+          infos: infosToStringList(message.infos),
           warnings: warningsToStringList(message.warnings),
         ));
       }
     });
     return controller.stream;
+  }
+
+  static List<String> infosToStringList(Infos infos) {
+    var ret = <String>[];
+    if (infos?.slowDrive ?? false) ret.add("Slow-mode drive");
+    //ret.add("Test Info");
+    return ret;
   }
 
   static List<String> warningsToStringList(Warnings warnings) {

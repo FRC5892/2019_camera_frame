@@ -1,0 +1,34 @@
+<div class="match-time"
+     [innerHtml]="state.matchTime"></div>
+
+<img class="team-banner"
+     src="images/5892_white.png" />
+
+<div class="battery-voltage"
+     [innerHtml]="state.batteryVoltage"></div>
+
+<img class="camera-feed"
+     src="images/cam_placeholder.png" />
+
+<img class="gearbolt"
+     src="images/gearbolt.png" />
+
+<div class="connection-state"
+     [innerHtml]="state.connectionMessage"></div>
+
+<div class="notices">
+    <div class="spacer"></div>
+    <h2>Infos</h2>
+    <ul>
+        <li *ngFor="let info of state.infos"
+            [innerHtml]="info"></li>
+    </ul>
+    <h2>Warnings</h2>
+    <ul>
+        <li *ngFor="let warning of state.warnings"
+            [innerHtml]="warning"></li>
+    </ul>
+</div>
+
+<cf-pressure-gauge class="pressure-gauge"
+                   [fullness]="state.pressureFullness"></cf-pressure-gauge>

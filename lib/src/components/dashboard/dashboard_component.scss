@@ -1,13 +1,18 @@
 :host {
   display: grid;
   width: 100%;
-  grid-template-rows: 110px 55px (240 - 55 - 10)px auto;
+  grid-template-rows: 110px
+                      55px
+                      (240 - 55 - 10)px
+                      100px
+                      auto;
   grid-template-columns: 360px 300px 300px;
   grid-template-areas:
     'match-time team-banner battery-voltage'
     'camera-feed gearbolt connection-state'
-    'camera-feed gearbolt warnings'
-    'nil gearbolt warnings';
+    'camera-feed gearbolt notices'
+    'pressure-gauge gearbolt notices'
+    'nil gearbolt notices';
   grid-gap: 10px;
   justify-content: space-around;
 }
@@ -50,12 +55,16 @@
   grid-area: connection-state;
 }
 
-.warnings {
-  grid-area: warnings;
+.notices {
+  grid-area: notices;
   font-size: 18pt;
 
+  .spacer {
+    height: 20px;
+  }
+
   h2 {
-    margin-bottom: 0;
+    margin: 0;
   }
 
   ul {

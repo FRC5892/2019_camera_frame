@@ -3,7 +3,7 @@ import 'package:angular_bloc/angular_bloc.dart';
 import 'package:web_socket_channel/html.dart';
 
 import 'src/blocs/status_bloc.dart';
-import 'src/dashboard_component.dart';
+import 'src/components/dashboard/dashboard_component.dart';
 
 @Component(
   selector: 'cf-app',
