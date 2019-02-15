@@ -31,6 +31,7 @@ class StatusRepository {
         controller.add(DisconnectMessage());
         setSubscription(connector(url).stream.listen((msg) {
           if (msg is String) {
+            print(msg);
             controller.add(PacketMessage.fromJson(jsonDecode(msg)));
           }
         }));

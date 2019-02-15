@@ -1,0 +1,13 @@
+@import "../../../shared";
+
+div {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  border: 2px solid white;
+  background-color: $team-orange;
+}
+
+div.on {
+  background-color: white;
+}

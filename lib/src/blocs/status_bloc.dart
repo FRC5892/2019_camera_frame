@@ -19,8 +19,8 @@ class StatusPacket {
   String batteryVoltage;
   double pressureFullness;
 
-  List<String> infos;
-  List<String> warnings;
+  Infos infos;
+  Warnings warnings;
 
   StatusPacket({
     this.connectionMessage = "Disconnected",
@@ -28,8 +28,8 @@ class StatusPacket {
     this.batteryVoltage = "",
     this.pressureFullness = 0,
 
-    this.infos = const [],
-    this.warnings = const [],
+    this.infos = const Infos(),
+    this.warnings = const Warnings(),
   });
 }
 
@@ -58,8 +58,8 @@ class StatusBloc extends Bloc<ConnectRequest, StatusPacket> {
           batteryVoltage: message.batteryVoltage.toStringAsFixed(2) + " V",
           pressureFullness: (message.pressureReading - 100) / 700.0,
 
-          infos: infosToStringList(message.infos),
-          warnings: warningsToStringList(message.warnings),
+          infos: message.infos,
+          warnings: message.warnings,
         ));
       }
     });

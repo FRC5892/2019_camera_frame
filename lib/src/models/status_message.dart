@@ -2,20 +2,24 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'status_message.g.dart';
 
-abstract class StatusMessage {}
+abstract class StatusMessage {
+  const StatusMessage();
+}
 
-class DisconnectMessage extends StatusMessage {}
+class DisconnectMessage extends StatusMessage {
+  const DisconnectMessage();
+}
 
 @JsonSerializable(createToJson: false)
 class PacketMessage extends StatusMessage {
-  int matchTime;
-  double batteryVoltage;
-  int pressureReading;
+  final int matchTime;
+  final double batteryVoltage;
+  final int pressureReading;
 
-  Infos infos;
-  Warnings warnings;
+  final Infos infos;
+  final Warnings warnings;
 
-  PacketMessage({
+  const PacketMessage({
     this.matchTime,
     this.batteryVoltage,
     this.pressureReading,
@@ -30,10 +34,14 @@ class PacketMessage extends StatusMessage {
 
 @JsonSerializable(createToJson: false)
 class Infos {
-  bool slowDrive;
+  final bool slowDrive;
+  final bool hasHatch;
+  final bool hasCargo;
 
-  Infos({
-    this.slowDrive,
+  const Infos({
+    this.slowDrive = false,
+    this.hasHatch = false,
+    this.hasCargo = false,
   });
 
   factory Infos.fromJson(Map<String, dynamic> json) => _$InfosFromJson(json);
@@ -41,10 +49,10 @@ class Infos {
 
 @JsonSerializable(createToJson: false)
 class Warnings {
-  bool isBrownedOut;
+  final bool isBrownedOut;
 
-  Warnings({
-    this.isBrownedOut,
+  const Warnings({
+    this.isBrownedOut = false,
   });
 
   factory Warnings.fromJson(Map<String, dynamic> json) =>

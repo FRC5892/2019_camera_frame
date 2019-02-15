@@ -17,17 +17,30 @@
      [innerHtml]="state.connectionMessage"></div>
 
 <div class="notices">
-    <div class="spacer"></div>
-    <h2>Infos</h2>
-    <ul>
-        <li *ngFor="let info of state.infos"
-            [innerHtml]="info"></li>
-    </ul>
-    <h2>Warnings</h2>
-    <ul>
-        <li *ngFor="let warning of state.warnings"
-            [innerHtml]="warning"></li>
-    </ul>
+    <table>
+        <tr>
+            <td colspan="2"><h2>Infos</h2></td>
+        </tr>
+        <tr>
+            <td>Slow drive</td>
+            <td><cf-bool [on]="state.infos.slowDrive"></cf-bool></td>
+        </tr>
+        <tr>
+            <td>Has hatch</td>
+            <td><cf-bool [on]="state.infos.hasHatch"></cf-bool></td>
+        </tr>
+        <tr>
+            <td>Has cargo</td>
+            <td><cf-bool [on]="state.infos.hasCargo"></cf-bool></td>
+        </tr>
+        <tr>
+            <td colspan="2"><h2>Warnings</h2></td>
+        </tr>
+        <tr>
+            <td>Brownout</td>
+            <td><cf-bool [on]="state.warnings.isBrownedOut"></cf-bool></td>
+        </tr>
+    </table>
 </div>
 
 <cf-pressure-gauge class="pressure-gauge"

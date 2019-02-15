@@ -9,6 +9,8 @@ linter:
   rules:
     - await_only_futures
     - directives_ordering
+    - unnecessary_new
+    - unnecessary_const
 
 analyzer:
   exclude: [build/**]
