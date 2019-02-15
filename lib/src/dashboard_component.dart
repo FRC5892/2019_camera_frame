@@ -11,6 +11,4 @@ import 'blocs/status_bloc.dart';
 class DashboardComponent {
   @Input()
   StatusPacket state;
-
-  String get connectionString => state.connected ? "Connected" : "Disconnected";
 }

@@ -13,7 +13,8 @@ import 'src/dashboard_component.dart';
   pipes: [BlocPipe],
 )
 class AppComponent implements OnInit {
-  StatusBloc statusBloc = StatusBloc(connector: (url) => HtmlWebSocketChannel.connect(url));
+  StatusBloc statusBloc =
+      StatusBloc(connector: (url) => HtmlWebSocketChannel.connect(url));
 
   @override
   ngOnInit() {

@@ -13,14 +13,14 @@ class ConnectRequest {
 }
 
 class StatusPacket {
-  bool connected;
+  String connectionMessage;
 
   String matchTime;
   String batteryVoltage;
   List<String> warnings;
 
   StatusPacket({
-    this.connected = false,
+    this.connectionMessage = "Disconnected",
     this.matchTime = "",
     this.batteryVoltage = "",
     this.warnings = const [],
@@ -46,7 +46,7 @@ class StatusBloc extends Bloc<ConnectRequest, StatusPacket> {
         controller.add(initialState);
       } else if (message is PacketMessage) {
         controller.add(StatusPacket(
-          connected: true,
+          connectionMessage: "Connected",
           matchTime: message.matchTime.toString(),
           batteryVoltage: message.batteryVoltage.toStringAsFixed(2) + " V",
           warnings: warningsToStringList(message.warnings),
