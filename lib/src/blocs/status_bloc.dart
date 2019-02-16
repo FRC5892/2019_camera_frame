@@ -50,13 +50,13 @@ class StatusBloc extends Bloc<ConnectRequest, StatusPacket> {
 
     repo.connect(event.address).listen((message) {
       if (message is DisconnectMessage) {
-        controller.add(initialState);
+        controller.add(StatusPacket());
       } else if (message is PacketMessage) {
         controller.add(StatusPacket(
           connectionMessage: "Connected",
           matchTime: message.matchTime.toString(),
           batteryVoltage: message.batteryVoltage.toStringAsFixed(2) + " V",
-          pressureFullness: (message.pressureReading - 100) / 700.0,
+          pressureFullness: clamp((message.pressureReading - 400) / 2800),
 
           infos: message.infos,
           warnings: message.warnings,
@@ -66,17 +66,9 @@ class StatusBloc extends Bloc<ConnectRequest, StatusPacket> {
     return controller.stream;
   }
 
-  static List<String> infosToStringList(Infos infos) {
-    var ret = <String>[];
-    if (infos?.slowDrive ?? false) ret.add("Slow-mode drive");
-    //ret.add("Test Info");
-    return ret;
-  }
-
-  static List<String> warningsToStringList(Warnings warnings) {
-    var ret = <String>[];
-    if (warnings?.isBrownedOut ?? false) ret.add("Browned out");
-    //ret.add("Test Warning");
-    return ret;
+  static double clamp(double number) {
+    if (number < 0) return 0;
+    if (number > 1) return 1;
+    return number;
   }
 }
