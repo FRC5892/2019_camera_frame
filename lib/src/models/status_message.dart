@@ -49,10 +49,10 @@ class Infos {
 
 @JsonSerializable(createToJson: false)
 class Warnings {
-  final bool isBrownedOut;
+  final bool brownedOut;
 
   const Warnings({
-    this.isBrownedOut = false,
+    this.brownedOut = false,
   });
 
   factory Warnings.fromJson(Map<String, dynamic> json) =>
