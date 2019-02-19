@@ -13,55 +13,62 @@ class StatusRepository {
 
   StatusRepository({@required this.connector});
 
-  // TODO maybe make this logic its own class. this is getting stupid.
   Stream<StatusMessage> connect(String url) {
-    bool retry = true;
-    StreamSubscription subscription;
+    return _Connector(connector, url).start();
+  }
+}
 
-    DateTime failAfter;
+class _Connector {
+  final WebSocketConnector connector;
+  final String url;
+  _Connector(this.connector, this.url);
 
-    Timer timer;
-
-    var controller = StreamController<StatusMessage>(
-        onPause: () => subscription.pause(),
-        onResume: () => subscription.resume(),
-        onCancel: () {
-          retry = false;
-          subscription.cancel();
-          timer.cancel();
-        });
-    
-    void handleMessage(msg) {
-      if (msg is String) {
-        //print(msg);
-        controller.add(PacketMessage.fromJson(jsonDecode(msg)));
-        failAfter = DateTime.now().add(const Duration(seconds: 1));
-      }
-    }
-
-    void Function() handleSubscriptionEnd;
-
-    void setSubscription(StreamSubscription sub) {
-      subscription = sub;
-      failAfter = DateTime.now().add(const Duration(seconds: 1));
-      sub.onDone(handleSubscriptionEnd);
-    }
-
-    handleSubscriptionEnd = () {
-      if (!retry) return;
-      controller.add(DisconnectMessage());
-      setSubscription(connector(url).stream.listen(handleMessage));
-    };
-
+  Stream<StatusMessage> start() {
+    controller = StreamController(
+      onPause: () => subscription.pause(),
+      onResume: () => subscription.resume(),
+      onCancel: () {
+        retry = false;
+        subscription.cancel();
+        timer.cancel();
+      },
+    );
     timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (failAfter != null && DateTime.now().isAfter(failAfter)) {
-        print("oh MAN failAfter is ${failAfter.toIso8601String()} better FAIL");
+        print("failAfter is ${failAfter.toIso8601String()} time to FAIL");
         subscription?.cancel();
         handleSubscriptionEnd();
       }
     });
-    
-    setSubscription(connector(url).stream.listen(handleMessage));
+    subscription = connector(url).stream.listen(handleMessage);
     return controller.stream;
+  }
+
+  bool retry = true;
+  StreamController<StatusMessage> controller;
+  Timer timer;
+
+  DateTime failAfter;
+
+  StreamSubscription _subscription;
+  StreamSubscription get subscription => _subscription;
+  set subscription(StreamSubscription sub) {
+    _subscription = sub;
+    failAfter = DateTime.now().add(const Duration(seconds: 1));
+    sub.onDone(handleSubscriptionEnd);
+  }
+
+  void handleMessage(msg) {
+    if (msg is String) {
+      //print(msg);
+      controller.add(PacketMessage.fromJson(jsonDecode(msg)));
+      failAfter = DateTime.now().add(const Duration(seconds: 1));
+    }
+  }
+
+  void handleSubscriptionEnd() {
+    if (!retry) return;
+    controller.add(const DisconnectMessage());
+    subscription = connector(url).stream.listen(handleMessage);
   }
 }
