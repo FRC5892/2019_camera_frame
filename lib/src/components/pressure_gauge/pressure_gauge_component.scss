@@ -1,3 +1,7 @@
+@function psi-to-pos($psi) {
+  @return $psi / 120 * 300;
+}
+
 :host {
   display: grid;
   grid-template-rows: 85px
@@ -19,14 +23,26 @@
 
 .gauge {
   grid-area: gauge;
-  background-color: white;
   height: 85px;
+
+  div {
+    background-color: white;
+    height: 85px;
+    position: relative;
+    left: 0;
+    display: inline-block;
+  }
+
+  .start {
+    width: 1px;
+  }
+
+  .end {
+    left: psi-to-pos(120) px;
+    width: 1px;
+  }
 }
 
 .placeholder {
   grid-area: nil;
-}
-
-@function psi-to-pos($psi) {
-  @return $psi / 120 * 300;
 }
