@@ -11,7 +11,12 @@ typedef MessageDispatcher = void Function(RobotMessage message);
   selector: "cf-dashboard",
   templateUrl: "dashboard_component.html",
   styleUrls: ["dashboard_component.css"],
-  directives: [coreDirectives, PressureGaugeComponent, BoolIndicator, AutonTripleChooserComponent],
+  directives: [
+    coreDirectives,
+    PressureGaugeComponent,
+    BoolIndicator,
+    AutonTripleChooserComponent
+  ],
 )
 class DashboardComponent {
   @Input()

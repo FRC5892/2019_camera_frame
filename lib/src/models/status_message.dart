@@ -10,7 +10,9 @@ class DisconnectMessage extends StatusMessage {
   const DisconnectMessage();
 }
 
-@JsonSerializable(createToJson: false)
+const jsonRead = JsonSerializable(createToJson: false);
+
+@jsonRead
 class PacketMessage extends StatusMessage {
   final int matchTime;
   final double batteryVoltage;
@@ -19,19 +21,22 @@ class PacketMessage extends StatusMessage {
   final Infos infos;
   final Warnings warnings;
 
+  final Settings settings;
+
   const PacketMessage({
     this.matchTime,
     this.batteryVoltage,
     this.pressureReading,
     this.infos,
     this.warnings,
+    this.settings,
   });
 
   factory PacketMessage.fromJson(Map<String, dynamic> json) =>
       _$PacketMessageFromJson(json);
 }
 
-@JsonSerializable(createToJson: false)
+@jsonRead
 class Infos {
   final bool slowDrive;
   final bool hasHatch;
@@ -46,7 +51,7 @@ class Infos {
   factory Infos.fromJson(Map<String, dynamic> json) => _$InfosFromJson(json);
 }
 
-@JsonSerializable(createToJson: false)
+@jsonRead
 class Warnings {
   final bool brownedOut;
 
@@ -56,4 +61,16 @@ class Warnings {
 
   factory Warnings.fromJson(Map<String, dynamic> json) =>
       _$WarningsFromJson(json);
+}
+
+@jsonRead
+class Settings {
+  final String autonSide;
+
+  const Settings({
+    this.autonSide,
+  });
+
+  factory Settings.fromJson(Map<String, dynamic> json) =>
+      _$SettingsFromJson(json);
 }

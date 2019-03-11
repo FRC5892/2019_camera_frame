@@ -38,6 +38,8 @@ class StatusPacket {
   Infos infos;
   Warnings warnings;
 
+  Settings settings;
+
   StatusPacket({
     this.connectionMessage = "Disconnected",
     this.matchTime = "",
@@ -45,6 +47,7 @@ class StatusPacket {
     this.pressureFullness = 0,
     this.infos = const Infos(),
     this.warnings = const Warnings(),
+    this.settings = const Settings(),
   });
 }
 
@@ -66,6 +69,7 @@ class StatusBloc extends Bloc<StatusEvent, StatusPacket> {
           pressureFullness: clamp((message.pressureReading - 400) / 2800),
           infos: message.infos,
           warnings: message.warnings,
+          settings: message.settings,
         ));
       }
     });
