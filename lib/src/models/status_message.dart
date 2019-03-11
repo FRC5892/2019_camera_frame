@@ -23,7 +23,6 @@ class PacketMessage extends StatusMessage {
     this.matchTime,
     this.batteryVoltage,
     this.pressureReading,
-
     this.infos,
     this.warnings,
   });

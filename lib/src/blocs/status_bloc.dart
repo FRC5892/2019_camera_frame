@@ -1,15 +1,31 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:stream_channel/stream_channel.dart';
 
 import '../models/status_message.dart';
 import '../repositories/status_repository.dart';
 
-class ConnectRequest {
-  String address;
+part 'status_bloc.g.dart';
 
-  ConnectRequest({this.address = "ws://10.58.92.2:5800"});
+abstract class StatusEvent {}
+
+class ConnectRequest extends StatusEvent {}
+
+@JsonSerializable(createFactory: false)
+class RobotMessage extends StatusEvent {
+  final String type;
+  final String data;
+
+  RobotMessage({
+    this.type,
+    this.data,
+  });
+
+  Map<String, dynamic> toJson() => _$RobotMessageToJson(this);
 }
 
 class StatusPacket {
@@ -27,28 +43,19 @@ class StatusPacket {
     this.matchTime = "",
     this.batteryVoltage = "",
     this.pressureFullness = 0,
-
     this.infos = const Infos(),
     this.warnings = const Warnings(),
   });
 }
 
-class StatusBloc extends Bloc<ConnectRequest, StatusPacket> {
+class StatusBloc extends Bloc<StatusEvent, StatusPacket> {
   final StatusPacket initialState = StatusPacket();
 
   final WebSocketConnector connector;
-  StatusBloc({@required this.connector});
-
-  StreamSubscription _lastSubscription;
-
-  @override
-  Stream<StatusPacket> mapEventToState(
-      StatusPacket currentState, ConnectRequest event) {
-    _lastSubscription?.cancel();
-    var repo = StatusRepository(connector: connector);
-    StreamController<StatusPacket> controller = StreamController();
-
-    repo.connect(event.address).listen((message) {
+  StatusBloc({@required this.connector})
+      : channel =
+            StatusRepository(connector: connector).connect("ws://10.58.92.2") {
+    channel.stream.listen((message) {
       if (message is DisconnectMessage) {
         controller.add(StatusPacket());
       } else if (message is PacketMessage) {
@@ -57,13 +64,30 @@ class StatusBloc extends Bloc<ConnectRequest, StatusPacket> {
           matchTime: message.matchTime.toString(),
           batteryVoltage: message.batteryVoltage.toStringAsFixed(2) + " V",
           pressureFullness: clamp((message.pressureReading - 400) / 2800),
-
           infos: message.infos,
           warnings: message.warnings,
         ));
       }
     });
+  }
+
+  final StreamController<StatusPacket> controller =
+      StreamController.broadcast();
+  final StreamChannel channel;
+
+  @override
+  Stream<StatusPacket> mapEventToState(
+      StatusPacket currentState, StatusEvent event) {
+    if (event is RobotMessage) {
+      channel.sink.add(jsonEncode(event));
+    }
+
     return controller.stream;
+  }
+
+  @override
+  void dispose() {
+    channel.sink.close();
   }
 
   static double clamp(double number) {
