@@ -17,11 +17,11 @@ class ConnectRequest extends StatusEvent {}
 
 @JsonSerializable(createFactory: false)
 class RobotMessage extends StatusEvent {
-  final String type;
+  final String name;
   final String data;
 
   RobotMessage({
-    this.type,
+    this.name,
     this.data,
   });
 

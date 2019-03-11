@@ -1,0 +1,28 @@
+@import "../../../shared";
+
+$button-width: 91px;
+
+:host {
+    display: grid;
+    grid-template-rows: 90px;
+    grid-template-columns: $button-width $button-width $button-width;
+    justify-content: space-evenly;
+    align-content: space-evenly;
+    background-color: white;
+}
+
+div {
+    margin: 0;
+    padding: 25px 0;
+    border: 0;
+    background-color: $team-orange;
+    color: white;
+    text-align: center;
+    font-size: 24pt;
+    cursor: pointer;
+
+    &.selected {
+        background-color: white;
+        color: $team-orange;
+    }
+}

@@ -1,0 +1,5 @@
+<div *ngFor="let dlStr of dataLabels"
+     role="button"
+     [innerHtml]="dl(dlStr).label"
+     [class.selected]="dl(dlStr).data == data"
+     (click)="dispatch(name, dl(dlStr).data)"></div>
