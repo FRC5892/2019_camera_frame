@@ -23,6 +23,7 @@ class AutonTripleChooserComponent {
   MessageDispatcher dispatcher;
 
   void dispatch(String name, String data) {
+    print("dispatching with name is $name and data is $data");
     dispatcher(RobotMessage(name: name, data: data));
   }
 

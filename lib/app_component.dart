@@ -9,15 +9,27 @@ import 'src/components/dashboard/dashboard_component.dart';
   selector: 'cf-app',
   styleUrls: ['app_component.css'],
   templateUrl: 'app_component.html',
-  directives: [DashboardComponent],
-  pipes: [BlocPipe],
+  directives: [coreDirectives, DashboardComponent],
+  pipes: [BlocPipe, AsyncPipe],
 )
 class AppComponent implements OnInit {
   StatusBloc statusBloc =
       StatusBloc(connector: (url) => HtmlWebSocketChannel.connect(url));
 
+  StatusPacket state;
+
   @override
   ngOnInit() {
     statusBloc.dispatch(ConnectRequest());
+    statusBloc.state.listen((stream) async {
+      await for (final state in stream) {
+        this.state = state;
+      }
+    });
+  }
+
+  void dispatch(StatusEvent evt) {
+    print("trying to dispatch $evt");
+    statusBloc.dispatch(evt);
   }
 }

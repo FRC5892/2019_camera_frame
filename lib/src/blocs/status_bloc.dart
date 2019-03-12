@@ -51,13 +51,13 @@ class StatusPacket {
   });
 }
 
-class StatusBloc extends Bloc<StatusEvent, StatusPacket> {
-  final StatusPacket initialState = StatusPacket();
+class StatusBloc extends Bloc<StatusEvent, Stream<StatusPacket>> {
+  final initialState = _makeStream(StatusPacket());
 
   final WebSocketConnector connector;
   StatusBloc({@required this.connector})
       : channel =
-            StatusRepository(connector: connector).connect("ws://10.58.92.2") {
+            StatusRepository(connector: connector).connect("ws://10.58.92.2:5800") {
     channel.stream.listen((message) {
       if (message is DisconnectMessage) {
         controller.add(StatusPacket());
@@ -80,14 +80,18 @@ class StatusBloc extends Bloc<StatusEvent, StatusPacket> {
   final StreamChannel channel;
 
   @override
-  Stream<StatusPacket> mapEventToState(
-      StatusPacket currentState, StatusEvent event) {
+  Stream<Stream<StatusPacket>> mapEventToState(
+      Stream<StatusPacket> currentState, StatusEvent event) {
+    print("got an event");
     if (event is RobotMessage) {
+      print("sending a message to the robot where name is ${event.name} and data is ${event.data}");
       channel.sink.add(jsonEncode(event));
     }
 
-    return controller.stream;
+    return _makeStream(controller.stream);
   }
+
+  static Stream<T> _makeStream<T>(T input) => Stream.fromFuture(Future.value(input));
 
   @override
   void dispose() {
