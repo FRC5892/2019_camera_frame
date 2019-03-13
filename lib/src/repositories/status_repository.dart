@@ -2,93 +2,68 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:meta/meta.dart';
-import 'package:stream_channel/stream_channel.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../models/status_message.dart';
 
 typedef WebSocketConnector = WebSocketChannel Function(String url);
 
-class StatusRepository {
-  final WebSocketConnector connector;
+class SocketDelegate {
+  final Stream<StatusMessage> messageStream;
+  final void Function(dynamic) returnMessage;
 
-  StatusRepository({@required this.connector});
-
-  StreamChannel<dynamic> connect(String url) {
-    return _Connector(connector, url).start();
-  }
+  SocketDelegate(this.messageStream, this.returnMessage);
 }
 
-class _Connector {
+class StatusRepository {
   final WebSocketConnector connector;
   final String url;
-  _Connector(this.connector, this.url);
 
-  StreamChannel<dynamic> start() {
-    /*final controller = StreamController(
-      onPause: () => subscription.pause(),
-      onResume: () => subscription.resume(),
-      onCancel: () {
-        retry = false;
-        subscription.cancel();
-        timer.cancel();
-      },
-    );
-    timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (failAfter != null && DateTime.now().isAfter(failAfter)) {
-        print("failAfter is ${failAfter.toIso8601String()} time to FAIL");
-        subscription?.cancel();
-        handleSubscriptionEnd();
+  StatusRepository({@required this.connector, @required this.url});
+
+  DateTime _failAfter;
+  Timer _timer;
+
+  final StreamController<SocketDelegate> _delegateController =
+      StreamController();
+  WebSocketChannel _currentChannel;
+  StreamController _currentDelegateStreamController;
+
+  Stream<SocketDelegate> startConnecting() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (_failAfter != null && DateTime.now().isAfter(_failAfter)) {
+        _establishNewConnection();
       }
     });
-    subscription = connector(url).stream.listen(handleMessage);
-    return controller.stream;*/
-    final controller = StreamChannelController();
-    localChannel = controller.local;
-    timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (failAfter != null && DateTime.now().isAfter(failAfter)) {
-        print("failAfter is ${failAfter.toIso8601String()} time to FAIL");
-        subscription?.cancel();
-        handleSubscriptionEnd();
+    return _delegateController.stream;
+  }
+
+  void _establishNewConnection() {
+    _currentChannel?.sink?.close();
+    _currentDelegateStreamController.add(DisconnectMessage());
+    _currentDelegateStreamController?.close();
+
+    _currentChannel = connector(url);
+    _currentDelegateStreamController = StreamController();
+    _currentChannel.stream.listen((msg) {
+      if (msg is String) {
+        try {
+          _currentDelegateStreamController
+              .add(PacketMessage.fromJson(jsonDecode(msg)));
+          _failAfter = DateTime.now().add(const Duration(milliseconds: 500));
+        } on FormatException {}
       }
-    });
-    final connection = connector(url);
-    localChannel.stream.listen((data) {
-      connection.sink.add(data);
-    }).onDone(() {
-      retry = false;
-      subscription.cancel();
-      timer.cancel();
-    });
-    subscription = connection.stream.listen(handleMessage);
-    return controller.foreign;
+    }).onDone(_establishNewConnection);
+    _delegateController.add(SocketDelegate(
+        _currentDelegateStreamController.stream, _currentChannel.sink.add));
+
+    _failAfter = DateTime.now().add(const Duration(seconds: 2));
   }
 
-  bool retry = true;
-  StreamChannel<dynamic> localChannel;
-  Timer timer;
-
-  DateTime failAfter;
-
-  StreamSubscription _subscription;
-  StreamSubscription get subscription => _subscription;
-  set subscription(StreamSubscription sub) {
-    _subscription = sub;
-    failAfter = DateTime.now().add(const Duration(seconds: 1));
-    sub.onDone(handleSubscriptionEnd);
-  }
-
-  void handleMessage(msg) {
-    if (msg is String) {
-      //print(msg);
-      localChannel.sink.add(PacketMessage.fromJson(jsonDecode(msg)));
-      failAfter = DateTime.now().add(const Duration(seconds: 1));
-    }
-  }
-
-  void handleSubscriptionEnd() {
-    if (!retry) return;
-    localChannel.sink.add(const DisconnectMessage());
-    subscription = connector(url).stream.listen(handleMessage);
+  void dispose() {
+    _delegateController.close();
+    _currentChannel.sink.close();
+    _currentDelegateStreamController.close();
+    _timer.cancel();
   }
 }
