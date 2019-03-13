@@ -27,7 +27,7 @@ class StatusRepository {
   final StreamController<SocketDelegate> _delegateController =
       StreamController();
   WebSocketChannel _currentChannel;
-  StreamController _currentDelegateStreamController;
+  StreamController<StatusMessage> _currentDelegateStreamController;
 
   Stream<SocketDelegate> startConnecting() {
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
@@ -35,12 +35,13 @@ class StatusRepository {
         _establishNewConnection();
       }
     });
+    _establishNewConnection();
     return _delegateController.stream;
   }
 
   void _establishNewConnection() {
     _currentChannel?.sink?.close();
-    _currentDelegateStreamController.add(DisconnectMessage());
+    _currentDelegateStreamController?.add(DisconnectMessage());
     _currentDelegateStreamController?.close();
 
     _currentChannel = connector(url);

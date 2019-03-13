@@ -11,7 +11,7 @@ import 'src/components/dashboard/dashboard_component.dart';
   selector: 'cf-app',
   styleUrls: ['app_component.css'],
   templateUrl: 'app_component.html',
-  directives: [DashboardComponent],
+  directives: [coreDirectives, DashboardComponent],
   pipes: [BlocPipe],
 )
 class AppComponent implements OnInit, OnDestroy {

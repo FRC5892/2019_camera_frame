@@ -61,21 +61,7 @@ class StatusBloc extends Bloc<StatusEvent, Stream<StatusPacket>> {
   StatusBloc({@required this.connector})
       : _repository = StatusRepository(
             connector: connector, url: "ws://10.58.92.2:5800") {
-    /*channel.stream.listen((message) {
-      if (message is DisconnectMessage) {
-        controller.add(StatusPacket());
-      } else if (message is PacketMessage) {
-        controller.add(StatusPacket(
-          connectionMessage: "Connected",
-          matchTime: message.matchTime.toString(),
-          batteryVoltage: message.batteryVoltage.toStringAsFixed(2) + " V",
-          pressureFullness: clamp((message.pressureReading - 400) / 2800),
-          infos: message.infos,
-          warnings: message.warnings,
-          settings: message.settings,
-        ));
-      }
-    });*/
+    print("StatusBloc constructor called");
     final delegateStream = _repository.startConnecting();
     delegateStream.listen((delegate) {
       // all the stream closing is handled in StatusRepository

@@ -1,4 +1,3 @@
-<div>
-    <cf-dashboard [state]="state"
-                  [dispatch]="statusBloc.dispatch"></cf-dashboard>
-</div>
+<cf-dashboard *ngIf="state != null"
+              [state]="state"
+              [dispatch]="statusBloc.dispatch"></cf-dashboard>
