@@ -41,7 +41,7 @@
 .camera-feed {
   grid-area: camera-feed;
 
-  transform: rotate(-90deg) translateX(-((360 - 240) / 2) px);
+  transform: rotate(90deg) translateX(((360 - 240) / 2) px);
 }
 
 .gearbolt {
@@ -63,7 +63,6 @@
     margin: 10px;
   }
 }
-
 
 .auton-chooser {
   grid-area: auton-chooser;

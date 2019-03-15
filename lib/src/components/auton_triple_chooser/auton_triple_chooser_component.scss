@@ -1,11 +1,11 @@
 @import "../../../shared";
 
-$button-width: 91px;
+$button-size: 92px;
 
 :host {
     display: grid;
-    grid-template-rows: 90px;
-    grid-template-columns: $button-width $button-width $button-width;
+    grid-template-rows: $button-size;
+    grid-template-columns: $button-size $button-size $button-size;
     justify-content: space-evenly;
     align-content: space-evenly;
     background-color: white;

@@ -1,3 +1,5 @@
+@import '../../../shared';
+
 @function psi-to-pos($psi) {
   @return $psi / 120 * 300;
 }
@@ -25,20 +27,30 @@
   grid-area: gauge;
   height: 85px;
 
-  div {
+  %bar {
     background-color: white;
     height: 85px;
-    position: relative;
-    left: 0;
+    //position: relative;
+    //left: 0;
     display: inline-block;
   }
 
   .start {
+    @extend %bar;
+
     width: 1px;
   }
 
+  .fill {
+    @extend %bar;
+
+    background-color: $team-orange;
+    width: 298px;
+  }
+
   .end {
-    left: psi-to-pos(120) px;
+    @extend %bar;
+
     width: 1px;
   }
 }
