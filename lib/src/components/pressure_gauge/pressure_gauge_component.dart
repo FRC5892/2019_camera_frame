@@ -9,5 +9,5 @@ class PressureGaugeComponent {
   @Input()
   double fullness;
 
-  String get width => "${(fullness * 298).round()}px";
+  String get width => "${(fullness * 300).round()}px";
 }

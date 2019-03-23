@@ -3,13 +3,15 @@
   width: 100%;
   grid-template-rows: 110px
                       55px
-                      (360 - 55 - 10)px
+                      (240 - 55 - 10)px
+                      100px
                       100px;
   grid-template-columns: 360px 300px 300px;
   grid-template-areas:
     'match-time team-banner battery-voltage'
     'camera-feed gearbolt connection-state'
     'camera-feed gearbolt notices'
+    'pressure-gauge gearbolt notices'
     'pressure-gauge gearbolt auton-chooser';
   grid-gap: 10px;
   justify-content: space-around;
@@ -40,8 +42,6 @@
 
 .camera-feed {
   grid-area: camera-feed;
-
-  transform: rotate(90deg) translateX(((360 - 240) / 2) px);
 }
 
 .gearbolt {

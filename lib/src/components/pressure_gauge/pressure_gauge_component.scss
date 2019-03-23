@@ -1,5 +1,3 @@
-@import '../../../shared';
-
 @function psi-to-pos($psi) {
   @return $psi / 120 * 300;
 }
@@ -25,34 +23,8 @@
 
 .gauge {
   grid-area: gauge;
+  background-color: white;
   height: 85px;
-
-  %bar {
-    background-color: white;
-    height: 85px;
-    //position: relative;
-    //left: 0;
-    display: inline-block;
-  }
-
-  .start {
-    @extend %bar;
-
-    width: 1px;
-  }
-
-  .fill {
-    @extend %bar;
-
-    background-color: $team-orange;
-    width: 298px;
-  }
-
-  .end {
-    @extend %bar;
-
-    width: 1px;
-  }
 }
 
 .placeholder {
