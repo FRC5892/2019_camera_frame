@@ -75,7 +75,7 @@ class StatusBloc extends Bloc<StatusEvent, Stream<StatusPacket>> {
       _controller.add(StatusPacket());
     } else if (message is PacketMessage) {
       _controller.add(StatusPacket(
-        connectionMessage: "Connected",
+        connectionMessage: processConnectionMessage(message.matchData),
         matchTime: message.matchTime.toString(),
         batteryVoltage: message.batteryVoltage.toStringAsFixed(2) + " V",
         pressureFullness: clamp(
@@ -85,6 +85,27 @@ class StatusBloc extends Bloc<StatusEvent, Stream<StatusPacket>> {
         warnings: message.warnings,
         settings: message.settings,
       ));
+    }
+  }
+
+  static String processConnectionMessage(MatchData matchData) {
+    switch (matchData.matchType) {
+      case 0:
+        return "Connected";
+      case 1:
+        return "${matchData.eventName} Test Match";
+      case 2:
+        if (matchData.replayNumber > 1) {
+          return "${matchData.eventName} "
+              "Q${matchData.matchNumber}:${matchData.replayNumber}";
+        }
+        return "${matchData.eventName} "
+            "Q${matchData.matchNumber}";
+      case 3:
+        return "${matchData.eventName} "
+            "E${matchData.matchNumber}:${matchData.replayNumber}";
+      default:
+        return "???";
     }
   }
 

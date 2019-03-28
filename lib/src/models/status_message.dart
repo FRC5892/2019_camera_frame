@@ -18,6 +18,8 @@ class PacketMessage extends StatusMessage {
   final double batteryVoltage;
   final int pressureReading;
 
+  final MatchData matchData;
+
   final Infos infos;
   final Warnings warnings;
 
@@ -27,6 +29,7 @@ class PacketMessage extends StatusMessage {
     this.matchTime,
     this.batteryVoltage,
     this.pressureReading,
+    this.matchData,
     this.infos,
     this.warnings,
     this.settings,
@@ -34,6 +37,24 @@ class PacketMessage extends StatusMessage {
 
   factory PacketMessage.fromJson(Map<String, dynamic> json) =>
       _$PacketMessageFromJson(json);
+}
+
+@jsonRead
+class MatchData {
+  final String eventName;
+  final int matchType;
+  final int matchNumber;
+  final int replayNumber;
+
+  const MatchData({
+    this.eventName,
+    this.matchType,
+    this.matchNumber,
+    this.replayNumber,
+  });
+
+  factory MatchData.fromJson(Map<String, dynamic> json) =>
+      _$MatchDataFromJson(json);
 }
 
 @jsonRead

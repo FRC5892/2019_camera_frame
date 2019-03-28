@@ -1,6 +1,5 @@
 import 'package:angular/angular.dart';
 
-
 @Component(
   selector: "cf-cam-display",
   templateUrl: "camera_display_component.html",
@@ -17,6 +16,9 @@ class CameraDisplayComponent implements OnInit {
   }
 
   void resetTimestamp() {
+    if (Uri.base.queryParameters["resetCamera"] == "false") {
+      return;
+    }
     timestamp = DateTime.now().toIso8601String();
   }
 }
