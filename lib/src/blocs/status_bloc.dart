@@ -102,8 +102,12 @@ class StatusBloc extends Bloc<StatusEvent, Stream<StatusPacket>> {
         return "${matchData.eventName} "
             "Q${matchData.matchNumber}";
       case 3:
+        if (matchData.replayNumber > 1) {
+          return "${matchData.eventName} "
+              "E${matchData.matchNumber}:${matchData.replayNumber}";
+        }
         return "${matchData.eventName} "
-            "E${matchData.matchNumber}:${matchData.replayNumber}";
+            "E${matchData.matchNumber}";
       default:
         return "???";
     }
