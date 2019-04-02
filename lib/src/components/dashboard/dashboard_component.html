@@ -7,7 +7,9 @@
 <div class="battery-voltage"
      [innerHtml]="state.batteryVoltage"></div>
 
-<cf-cam-display></cf-cam-display>
+<cf-cam-display [placeholder]="false"
+                [sideways]="true">
+</cf-cam-display>
 
 <img class="gearbolt"
      src="images/gearbolt.png" />
@@ -45,8 +47,8 @@
 <cf-pressure-gauge class="pressure-gauge"
                    [fullness]="state.pressureFullness"></cf-pressure-gauge>
 
-<cf-auto-chooser class="auton-chooser"
+<!--cf-auto-chooser class="auton-chooser"
                  name="auton-side"
                  [data]="state.settings.autonSide"
                  [dataLabels]="['left:Left','none:None','right:Right']"
-                 [dispatcher]="dispatch"></cf-auto-chooser>
+                 [dispatcher]="dispatch"></cf-auto-chooser-->

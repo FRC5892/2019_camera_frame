@@ -3,10 +3,10 @@
   width: 100%;
   grid-template-rows: 110px
                       55px
-                      (240 - 55 - 10)px
-                      100px
+                      (320 - 55 - 10)px
+                      20px
                       100px;
-  grid-template-columns: 360px 300px 300px;
+  grid-template-columns: 320px 300px 300px;
   grid-template-areas:
     'match-time team-banner battery-voltage'
     'camera-feed gearbolt connection-state'

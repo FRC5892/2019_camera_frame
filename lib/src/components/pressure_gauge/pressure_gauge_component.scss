@@ -6,7 +6,7 @@
   display: grid;
   grid-template-rows: 85px
                       10px;
-  grid-template-columns: 50px 300px;
+  grid-template-columns: 50px (320 - 50 - 10)px;
   grid-template-areas:
     'label gauge'
     'nil nil';
