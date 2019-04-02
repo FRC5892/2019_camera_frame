@@ -89,11 +89,34 @@ class StatusBloc extends Bloc<StatusEvent, Stream<StatusPacket>> {
   }
 
   static String processConnectionMessage(MatchData matchData) {
+    const elimNames = [
+      "QF 1-1",
+      "QF 2-1",
+      "QF 3-1",
+      "QF 4-1",
+      "QF 1-2",
+      "QF 2-2",
+      "QF 3-2",
+      "QF 4-2",
+      "QF 1-3",
+      "QF 2-3",
+      "QF 3-3",
+      "QF 4-3",
+      "SF 1-1",
+      "SF 2-1",
+      "SF 1-2",
+      "SF 2-2",
+      "SF 1-3",
+      "SF 2-3",
+      "Final 1",
+      "Final 2",
+      "Final 3",
+    ];
     switch (matchData.matchType) {
       case 0:
         return "Connected";
       case 1:
-        return "${matchData.eventName} Test Match";
+        return "${matchData.eventName} Practice";
       case 2:
         if (matchData.replayNumber > 1) {
           return "${matchData.eventName} "
@@ -102,12 +125,20 @@ class StatusBloc extends Bloc<StatusEvent, Stream<StatusPacket>> {
         return "${matchData.eventName} "
             "Q${matchData.matchNumber}";
       case 3:
+        if (matchData.matchNumber > elimNames.length) {
+          if (matchData.replayNumber > 1) {
+            return "${matchData.eventName} "
+                "E${matchData.matchNumber}:${matchData.replayNumber}";
+          }
+          return "${matchData.eventName} "
+              "E${matchData.matchNumber}";
+        }
         if (matchData.replayNumber > 1) {
           return "${matchData.eventName} "
-              "E${matchData.matchNumber}:${matchData.replayNumber}";
+              "${elimNames[matchData.matchNumber]}:${matchData.replayNumber}";
         }
         return "${matchData.eventName} "
-            "E${matchData.matchNumber}";
+            "${elimNames[matchData.matchNumber]}";
       default:
         return "???";
     }
