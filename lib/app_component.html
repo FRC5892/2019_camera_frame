@@ -1,3 +1,4 @@
 <cf-dashboard *ngIf="state != null"
               [state]="state"
-              [dispatch]="statusBloc.dispatch"></cf-dashboard>
+              [dispatch]="statusBloc.dispatch"
+              [class.killDrive]="state.infos.killDrive"></cf-dashboard>

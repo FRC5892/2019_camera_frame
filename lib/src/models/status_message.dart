@@ -60,13 +60,13 @@ class MatchData {
 @jsonRead
 class Infos {
   final bool slowDrive;
-  final bool hasHatch;
-  final bool hasCargo;
+  final bool killDrive;
+  final bool slowElevator;
 
   const Infos({
     this.slowDrive = false,
-    this.hasHatch = false,
-    this.hasCargo = false,
+    this.killDrive = false,
+    this.slowElevator = false,
   });
 
   factory Infos.fromJson(Map<String, dynamic> json) => _$InfosFromJson(json);

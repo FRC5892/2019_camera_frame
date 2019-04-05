@@ -1,3 +1,13 @@
 :host {
     margin: 20px;
 }
+
+.killDrive {
+    animation: killDrive 0.5s step-start 0s infinite;
+}
+
+@keyframes killDrive {
+    50% {
+        background-color: red;
+    }
+}
