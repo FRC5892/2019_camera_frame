@@ -62,11 +62,13 @@ class Infos {
   final bool slowDrive;
   final bool killDrive;
   final bool slowElevator;
+  final bool hasCargo;
 
   const Infos({
     this.slowDrive = false,
     this.killDrive = false,
     this.slowElevator = false,
+    this.hasCargo = false,
   });
 
   factory Infos.fromJson(Map<String, dynamic> json) => _$InfosFromJson(json);
