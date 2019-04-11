@@ -20,7 +20,6 @@ class AppComponent implements OnInit, OnDestroy {
 
   StatusPacket state;
   StreamSubscription<StatusPacket> _subscription;
-  String wsTimestamp;
 
   @override
   ngOnInit() {
@@ -31,7 +30,6 @@ class AppComponent implements OnInit, OnDestroy {
         _subscription = stream.listen((status) {
           state = status;
         });
-        wsTimestamp = DateTime.now().toIso8601String();
       });
   }
 

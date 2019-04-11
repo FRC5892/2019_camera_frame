@@ -42,6 +42,8 @@ class StatusPacket {
 
   Settings settings;
 
+  String wsTimestamp;
+
   StatusPacket({
     this.connectionMessage = "Disconnected",
     this.matchTime = "",
@@ -50,12 +52,15 @@ class StatusPacket {
     this.infos = const Infos(),
     this.warnings = const Warnings(),
     this.settings = const Settings(),
+    this.wsTimestamp = "",
   });
 }
 
 class StatusBloc extends Bloc<StatusEvent, Stream<StatusPacket>> {
   @override
   final initialState = _wrapStream(StatusPacket());
+
+  String wsTimestamp = DateTime.now().toIso8601String();
 
   final WebSocketConnector connector;
   StatusBloc({@required this.connector})
@@ -72,7 +77,8 @@ class StatusBloc extends Bloc<StatusEvent, Stream<StatusPacket>> {
 
   void _handleMessage(StatusMessage message) {
     if (message is DisconnectMessage) {
-      _controller.add(StatusPacket());
+      wsTimestamp = DateTime.now().toIso8601String();
+      _controller.add(StatusPacket(wsTimestamp: wsTimestamp));
     } else if (message is PacketMessage) {
       _controller.add(StatusPacket(
         connectionMessage: processConnectionMessage(message.matchData),
@@ -84,6 +90,7 @@ class StatusBloc extends Bloc<StatusEvent, Stream<StatusPacket>> {
         infos: message.infos,
         warnings: message.warnings,
         settings: message.settings,
+        wsTimestamp: wsTimestamp,
       ));
     }
   }

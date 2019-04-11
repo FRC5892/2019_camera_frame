@@ -26,7 +26,4 @@ class DashboardComponent {
 
   @Input()
   MessageDispatcher dispatch;
-
-  @Input()
-  String wsTimestamp;
 }
