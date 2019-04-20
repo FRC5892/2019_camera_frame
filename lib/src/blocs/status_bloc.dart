@@ -11,7 +11,7 @@ import '../repositories/status_repository.dart';
 part 'status_bloc.g.dart';
 
 const pressureReading0Psi = 400;
-const pressureReading120Psi = 1200;
+const pressureReading120Psi = 2800;
 
 abstract class StatusEvent {}
 
@@ -42,8 +42,6 @@ class StatusPacket {
 
   Settings settings;
 
-  String wsTimestamp;
-
   StatusPacket({
     this.connectionMessage = "Disconnected",
     this.matchTime = "",
@@ -52,7 +50,6 @@ class StatusPacket {
     this.infos = const Infos(),
     this.warnings = const Warnings(),
     this.settings = const Settings(),
-    this.wsTimestamp = "",
   });
 }
 
@@ -78,7 +75,7 @@ class StatusBloc extends Bloc<StatusEvent, Stream<StatusPacket>> {
   void _handleMessage(StatusMessage message) {
     if (message is DisconnectMessage) {
       wsTimestamp = DateTime.now().toIso8601String();
-      _controller.add(StatusPacket(wsTimestamp: wsTimestamp));
+      _controller.add(StatusPacket());
     } else if (message is PacketMessage) {
       _controller.add(StatusPacket(
         connectionMessage: processConnectionMessage(message.matchData),
@@ -90,7 +87,6 @@ class StatusBloc extends Bloc<StatusEvent, Stream<StatusPacket>> {
         infos: message.infos,
         warnings: message.warnings,
         settings: message.settings,
-        wsTimestamp: wsTimestamp,
       ));
     }
   }

@@ -8,8 +8,7 @@
      [innerHtml]="state.batteryVoltage"></div>
 
 <cf-cam-display [placeholder]="false"
-                [sideways]="true"
-                [wsTimestamp]="state.wsTimestamp">
+                [sideways]="true">
 </cf-cam-display>
 
 <img class="gearbolt"
@@ -40,11 +39,11 @@
             <td>Has hatch</td>
             <td><cf-bool [on]="state.infos.hasHatch"></cf-bool></td>
         </tr>
-        -->
         <tr>
             <td>Has cargo</td>
             <td><cf-bool [on]="state.infos.hasCargo"></cf-bool></td>
         </tr>
+        -->
         <tr>
             <td colspan="2"><h2>Warnings</h2></td>
         </tr>

@@ -14,16 +14,13 @@ class CameraDisplayComponent implements OnInit {
   @Input()
   bool placeholder = false;
 
-  @Input()
-  String wsTimestamp;
-
   String timestamp;
 
   String get imageSrc {
     if (placeholder) {
       return "images/cam_placeholder.png";
     }
-    return "$baseUrl?$timestamp$wsTimestamp";
+    return "$baseUrl?$timestamp";
   }
 
   @override
