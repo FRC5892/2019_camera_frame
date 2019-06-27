@@ -1,3 +1,4 @@
-<img [src]="imageSrc"
+<img *ngIf="displayFeed"
+     [src]="imageSrc"
      [class.sideways]="sideways"
      (error)="resetTimestamp()" />

@@ -4,6 +4,7 @@ import 'package:angular/angular.dart';
   selector: "cf-cam-display",
   templateUrl: "camera_display_component.html",
   styleUrls: ["camera_display_component.css"],
+  directives: [coreDirectives],
 )
 class CameraDisplayComponent implements OnInit {
   static const baseUrl = "http://10.58.92.2:1181/stream.mjpg";
@@ -13,6 +14,9 @@ class CameraDisplayComponent implements OnInit {
 
   @Input()
   bool placeholder = false;
+
+  @Input()
+  bool displayFeed = false;
 
   String timestamp;
 
