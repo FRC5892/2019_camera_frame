@@ -19,7 +19,8 @@
 
 %big-text {
   font-size: 48pt;
-  margin: auto;
+  width: 100%;
+  text-align: center;
   padding: 15px;
 }
 
@@ -51,7 +52,8 @@ cf-cam-display {
 
 .connection-state {
   font-size: 36pt;
-  margin: auto;
+  width: 100%;
+  text-align: center;
   grid-area: connection-state;
 }
 
